@@ -177,6 +177,9 @@ def _compute_targets(entry):
 
 
 def _compute_and_log_stats(roidb):
+    if len(roidb) == 0:
+        print("WOOPS! Length of roidb: ", len(roidb))
+        #return
     classes = roidb[0]['dataset'].classes
     char_len = np.max([len(c) for c in classes])
     hist_bins = np.arange(len(classes) + 1)
