@@ -1,6 +1,8 @@
 # Own
 .idea/
 johansl@samuel01.idi.ntnu.no
+.nfs*
+docker/
 
 
 # Byte-compiled / optimized / DLL files
