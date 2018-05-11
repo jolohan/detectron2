@@ -37,6 +37,28 @@ RAW_DIR = 'raw_dir'
 
 # Available datasets
 DATASETS = {
+    ###################################################
+    # MINE ############################################
+    ###################################################
+    'dsb18_train': {
+        IM_DIR:
+            _DATA_DIR + '/dsb18/train',
+        ANN_FN:
+            _DATA_DIR + '/dsb18/annotations/train.json'
+    },
+    'dsb18_val': {
+        IM_DIR:
+            _DATA_DIR + '/dsb18/train',
+        ANN_FN:
+            _DATA_DIR + '/dsb18/annotations/train.json'
+    },
+    'dsb18_test': {
+        IM_DIR:
+            _DATA_DIR + '/dsb18/train',
+        ANN_FN:
+            _DATA_DIR + '/dsb18/annotations/train.json'
+    },
+    ###################################################
     'cityscapes_fine_instanceonly_seg_train': {
         IM_DIR:
             _DATA_DIR + '/cityscapes/images',
