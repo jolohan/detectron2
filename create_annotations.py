@@ -11,7 +11,9 @@ from pycococreatortools import pycococreatortools
 
 ROOT_DIR = 'detectron/datasets/data/dsb18'
 IMAGE_DIR = os.path.join(ROOT_DIR, "train")
-ANNOTATION_DIR = os.path.join(ROOT_DIR, "annotations")
+#ANNOTATION_DIR = os.path.join(ROOT_DIR, "annotations")
+ANNOTATION_DIR = "/home/johan/PycharmProjects/convert_data/dsb18/train/annotations"
+
 
 INFO = {
     "description": "dsb18",
@@ -83,6 +85,7 @@ def main():
 
         # go through each image
         for image_filename in image_files:
+            #print(image_filename)
             image = Image.open(image_filename)
             image_info = pycococreatortools.create_image_info(
                 image_id, os.path.basename(image_filename), image.size)
@@ -96,7 +99,7 @@ def main():
                 for annotation_filename in annotation_files:
 
                     print(annotation_filename)
-                    if 'square' in annotation_filename:
+                    if 'none' in annotation_filename:
                         class_id = 1
                     elif 'circle' in annotation_filename:
                         class_id = 2
@@ -118,7 +121,7 @@ def main():
 
             image_id = image_id + 1
 
-    with open('{}/instances_shape_train2018.json'.format(ROOT_DIR), 'w') as output_json_file:
+    with open('{}/train.json'.format(ROOT_DIR), 'w') as output_json_file:
         json.dump(coco_output, output_json_file)
 
 
