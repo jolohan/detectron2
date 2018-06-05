@@ -1,0 +1,32 @@
+MODEL_DIR = 'checkpoints'
+COCO_MODEL_PATH = 'mask_rcnn_coco.h5'
+# imagenet, coco, or last
+init_with = "last"
+
+LEARNING_RATE = 0.001
+
+# If enabled, resizes instance masks to a smaller size to reduce
+# memory load. Recommended when using high-resolution images.
+USE_MINI_MASK = False
+MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
+
+# Train on 1 GPU and 8 images per GPU. Batch size is GPUs * images/GPU.
+GPU_COUNT = 2
+IMAGES_PER_GPU = 8
+bs = GPU_COUNT * IMAGES_PER_GPU
+# Total number of steps (batches of samples) to yield from generator before declaring one epoch finished and starting the next epoch.
+# typically be equal to the number of samples of your dataset divided by the batch size
+STEPS_PER_EPOCH = 620//bs
+VALIDATION_STEPS = 70//bs
+
+# Number of classes (including background)
+NUM_CLASSES = 1 + 1  # background + nucleis
+
+# Input image resing
+# Images are resized such that the smallest side is &gt;= IMAGE_MIN_DIM and
+# the longest side is &lt;= IMAGE_MAX_DIM. In case both conditions can't
+# be satisfied together the IMAGE_MAX_DIM is enforced.
+IMAGE_MIN_DIM = 256
+IMAGE_MAX_DIM = 256
+
+

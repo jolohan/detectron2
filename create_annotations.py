@@ -9,10 +9,12 @@ from PIL import Image
 import numpy as np
 from pycococreatortools import pycococreatortools
 
+dataset = "test"
+
 ROOT_DIR = 'detectron/datasets/data/dsb18'
-IMAGE_DIR = os.path.join(ROOT_DIR, "train")
+IMAGE_DIR = os.path.join(ROOT_DIR, dataset)
 #ANNOTATION_DIR = os.path.join(ROOT_DIR, "annotations")
-ANNOTATION_DIR = "/home/johan/PycharmProjects/convert_data/dsb18/train/annotations"
+ANNOTATION_DIR = "/home/johan/PycharmProjects/convert_data/dsb18/annotations"#train/annotations"
 
 
 INFO = {
@@ -45,9 +47,9 @@ CATEGORIES = [
     },
 ]
 
-
+# also  png files
 def filter_for_jpeg(root, files):
-    file_types = ['*.jpeg', '*.jpg']
+    file_types = ['*.jpeg', '*.jpg', '*.png'] # also  png files
     file_types = r'|'.join([fnmatch.translate(x) for x in file_types])
     files = [os.path.join(root, f) for f in files]
     files = [f for f in files if re.match(file_types, f)]
@@ -80,12 +82,11 @@ def main():
     segmentation_id = 1
 
     # filter for jpeg images
+    #print(IMAGE_DIR)
     for root, _, files in os.walk(IMAGE_DIR):
         image_files = filter_for_jpeg(root, files)
-
-        # go through each image
         for image_filename in image_files:
-            #print(image_filename)
+            print(image_filename)
             image = Image.open(image_filename)
             image_info = pycococreatortools.create_image_info(
                 image_id, os.path.basename(image_filename), image.size)
@@ -98,7 +99,7 @@ def main():
                 # go through each associated annotation
                 for annotation_filename in annotation_files:
 
-                    print(annotation_filename)
+                    #print(annotation_filename)
                     if 'none' in annotation_filename:
                         class_id = 1
                     elif 'circle' in annotation_filename:
@@ -121,8 +122,9 @@ def main():
 
             image_id = image_id + 1
 
-    with open('{}/train.json'.format(ROOT_DIR), 'w') as output_json_file:
+    with open(('{}/' + dataset + '.json').format(ROOT_DIR), 'w') as output_json_file:
         json.dump(coco_output, output_json_file)
+        print(output_json_file)
 
 
 if __name__ == "__main__":

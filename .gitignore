@@ -3,6 +3,9 @@
 johansl@samuel01.idi.ntnu.no
 .nfs*
 docker/
+output/
+configs/models/
+detectron/datasets/
 
 
 # Byte-compiled / optimized / DLL files

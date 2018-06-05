@@ -54,9 +54,15 @@ DATASETS = {
     },
     'dsb18_test': {
         IM_DIR:
-            _DATA_DIR + '/dsb18/train',
+            _DATA_DIR + '/dsb18/test',
         ANN_FN:
-            _DATA_DIR + '/dsb18/annotations/train.json'
+            _DATA_DIR + '/dsb18/annotations/test.json'
+    },
+    'dsb18_stage1_test': {
+        IM_DIR:
+            _DATA_DIR + '/dsb18/stage1_test',
+        ANN_FN:
+            _DATA_DIR + '/dsb18/annotations/stage1_test.json'
     },
     ###################################################
     'cityscapes_fine_instanceonly_seg_train': {

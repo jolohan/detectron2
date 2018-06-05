@@ -12,6 +12,7 @@ RUN pip install --upgrade pip
 
 # Install Python dependencies
 RUN pip install numpy>=1.13 pyyaml>=3.12 matplotlib opencv-python>=3.2 setuptools Cython mock scipy easydict
+RUN pip install pathlib joblib imageio xmltodict unicodecsv scipy
 
 # Install the COCO API
 RUN git clone https://github.com/cocodataset/cocoapi.git /cocoapi
@@ -34,3 +35,5 @@ RUN make
 # Get to "home"
 #WORKDIR ..
 
+# Run inference
+#RUN python2 tools/test_net.py --cfg configs/12_2017_baselines/e2e_mask_rcnn_X-152-32x8d-FPN-IN5k_1.44x.yaml NUM_GPUS 1
