@@ -6,6 +6,7 @@ docker/
 output/
 configs/models/
 detectron/datasets/
+configs/pre-trained-weights
 
 
 # Byte-compiled / optimized / DLL files

@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 
 
-def join_results(seg_filename, annotation_filename,
+def join_results(seg_filename, annotation_filename, result_filename,
                  intersection_thresh=0.3, mask_area_threshold=15,
                  accuracy_threshold=0.5):
     TOL = 0.00001
@@ -66,7 +66,7 @@ def join_results(seg_filename, annotation_filename,
         all_masks_no_refine = None
 
         for mask_number, mask in enumerate(all_segs_in_image):
-            print(mask)
+            #print(mask)
             im_id = mask['image_id']
             rle = mask['segmentation']
             score = mask['score']
@@ -131,7 +131,7 @@ def join_results(seg_filename, annotation_filename,
             if u_rle.strip():
                 csv_res.append([im_name, u_rle])
 
-    write_csv("test2", csv_res)
+    write_csv(result_filename, csv_res)
 
 def write_csv(filename, data):
     # Write CSV file
@@ -139,7 +139,7 @@ def write_csv(filename, data):
         writer = csv.writer(fp, encoding='utf-8')
         # writer.writerow(["your", "header", "foo"])  # write header
         writer.writerows(data)
-    print("Wrote file: "+ filename+".csv")
+    print("Wrote file: "+ filename)
 
 def print_time(seconds):
     sec = timedelta(seconds)
@@ -171,22 +171,29 @@ def make_hex_to_id_dic(annotations):
         #print(hex_to_id["jjgj"]) # make it crash
     return hex_to_id, id_to_hex
 
-def write_results(seg_filename, annotation_filename):
+def write_results(seg_filename, annotation_filename, result_filename):
 
-    join_results(seg_filename=seg_filename, annotation_filename=annotation_filename)
+    join_results(seg_filename=seg_filename,
+                 annotation_filename=annotation_filename,
+                 result_filename=result_filename)
 
 if __name__ == '__main__':
     #annotation_filename = 'detectron/datasets/data/dsb18/annotations/test'
     # seg_filename = "/detectron/output/test/dsb18_test/generalized_rcnn/" \
     #              "segmentations_dsb18_test_results.json"
     seg_filename = "segm_18000.json"
-    annotation_filename = 'detectron/datasets/data/dsb18/annotations/test.json'
+    annotation_filename = 'detectron/datasets/data/dsb18/annotations/stage1_test.json'
+    result_filename = 'test2.csv'
     if len(sys.argv) > 1:
         seg_filename = sys.argv[1]
     if len(sys.argv) > 2:
         annotation_filename = sys.argv[2]
+    if len(sys.argv) > 3:
+        result_filename = sys.argv[3]
 
     print("Writing results from seg file: ", seg_filename)
     print("And annotations file: ", annotation_filename)
     #seg_filename = "segmentations_dsb18_test_results"
-    write_results(seg_filename=seg_filename, annotation_filename=annotation_filename)
+    write_results(seg_filename=seg_filename,
+                  annotation_filename=annotation_filename,
+                  result_filename=result_filename)

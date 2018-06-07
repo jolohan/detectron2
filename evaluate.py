@@ -1,7 +1,8 @@
 
 import csv
 import numpy as np
-
+import os.path
+import sys
 
 def load_csv_file(filename, skip_columns=0):
     with open(filename, 'r') as f:
@@ -79,38 +80,6 @@ def get_score(results, ground_truth):
         all_image_scores.append(image_score)
         print(np.average(all_image_scores))
 
-        """
-        for i in range(50, 100, 5):
-            print("Evaluating threshold : ", i//100)
-            threshold = i * 1.0 / 100
-            true_positives = 0
-            false_positives = 0
-            false_negatives = 0
-
-            for results_seg in results_segs:
-
-                overlapping_score = 0
-                index = 0
-                while overlapping_score < threshold:
-                    if len(ground_truth_segs) > index:
-                        ground_truth_seg = ground_truth_segs[index]
-                        index += 1
-                        overlapping_score = get_overlapping_score(results_seg, ground_truth_seg)
-                    else:
-                        break
-
-                if overlapping_score >= threshold:
-                    true_positives += 1
-                else:
-                    false_positives += 1
-            print("done at threshold")
-            false_negatives = all_positives - true_positives
-
-            score_at_threshold = true_positives*1.0 \
-                                 / (1.0*(true_positives+false_positives+false_negatives))
-            image_scores_at_threshold.append(score_at_threshold)
-            """
-
     return np.average(all_image_scores)
 
 
@@ -135,13 +104,34 @@ def get_all_pixels_from_rle(rle):
 
     return all_pixels
 
-def evaluate(filename_results, filename_solution):
+def append_score_to_csv_file(score, filename, model):
+    if os.path.isfile(filename):
+        with open (filename, "a") as f:
+            f.write('\n' + model + "," + str(score))
+    else:
+        with open(filename, 'w') as f:
+            f.write(model + "," + str(score))
+
+def evaluate(filename_results, filename_solution, filename_write_score, model):
     print("Evaluating")
     results = load_csv_file(filename=filename_results)
     ground_truth = load_csv_file(filename=filename_solution, skip_columns=3)
-    get_score(results=results, ground_truth=ground_truth)
+    score = get_score(results=results, ground_truth=ground_truth)
+    append_score_to_csv_file(score=score, filename=filename_write_score, model=model)
 
 if __name__ == '__main__':
-    evaluate(filename_results="output/50000_iter___e2e_mask_rcnn_X-101-64x4d-FPN_1x"
-                              "/50000_iter___e2e_mask_rcnn_X-101-64x4d-FPN_1x___stage1_test.csv",
-             filename_solution="detectron/datasets/data/dsb18/stage1_solution.csv")
+    filename_results = "stage1_test.csv"
+    model = "standard"
+    config = 'e2e_mask_rcnn_X-101-64x4d-FPN_1x_v2'
+    if len(sys.argv) > 3:
+        results_root = sys.argv[1]
+        config = sys.argv[2]
+        model = sys.argv[3]
+        filename_results = results_root + config + '___' + model + ".csv"
+    else:
+        print("evaluate takes 3 arguments")
+    evaluate(filename_results=filename_results,
+             filename_solution="detectron/datasets/data/dsb18/stage1_solution.csv",
+             filename_write_score='output/all_scores_' + config + '.csv',
+             model=model)
+    #output/180000_iter___e2e_mask_rcnn_R-101-FPN_1x/
